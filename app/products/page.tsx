@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { Suspense, useMemo, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Filter, SlidersHorizontal, X, ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -31,7 +31,7 @@ const priceRanges = [
   { id: 'over-8000', label: '₹8,000 க்கு மேல்', min: 96, max: Infinity },
 ]
 
-export default function ProductsPage() {
+function ProductsPageInner() {
   const searchParams = useSearchParams()
   const categoryParam = searchParams.get('category')
   
@@ -364,5 +364,13 @@ export default function ProductsPage() {
 
       <Footer />
     </div>
+  )
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background" />}>
+      <ProductsPageInner />
+    </Suspense>
   )
 }
